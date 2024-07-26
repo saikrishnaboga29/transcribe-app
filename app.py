@@ -28,7 +28,7 @@ def upload_file():
     filename = secure_filename(file.filename)
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(file_path)
-
+    print("file path ..........." , file_path)
     transcription = transcribe_audio(file_path)
     transcription_filename = f"{os.path.splitext(filename)[0]}.txt"
     transcription_path = os.path.join(app.config['TRANSCRIPTION_FOLDER'], transcription_filename)

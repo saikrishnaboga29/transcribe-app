@@ -9,8 +9,11 @@ document.getElementById('uploadForm').addEventListener('submit', function(e) {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
+    .then(response => {
+        console.log(response)
+        response.text()})
     .then(data => {
+        console.log(data)
         document.getElementById('transcription').innerText = data;
     })
     .catch(error => {
