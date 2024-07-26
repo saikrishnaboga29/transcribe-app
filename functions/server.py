@@ -1,4 +1,3 @@
-import json
 from flask_lambda import FlaskLambda
 from app import app
 
