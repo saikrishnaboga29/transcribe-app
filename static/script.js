@@ -9,11 +9,22 @@ document.getElementById('uploadForm').addEventListener('submit', function(e) {
         method: 'POST',
         body: formData
     })
-    .then(response => response.text())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
-        document.getElementById('transcription').innerText = data;
+        console.log(data)
+        if (data.error) {
+            document.getElementById('transcription').innerText = data.error;
+        } else {
+            document.getElementById('transcription').innerText = data.transcription;
+        }
     })
     .catch(error => {
         console.error('Error:', error);
+        document.getElementById('transcription').innerText = 'An error occurred while processing the file.';
     });
 });

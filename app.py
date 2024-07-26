@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_file
+from flask import Flask, request, render_template, jsonify
 from werkzeug.utils import secure_filename
 import os
 import speech_recognition as sr
@@ -6,9 +6,9 @@ from pydub import AudioSegment
 
 app = Flask(__name__, template_folder='templates')
 
-# Hard-coded directories for temporary storage
-app.config['UPLOAD_FOLDER'] = '/tmp/uploads'
-app.config['TRANSCRIPTION_FOLDER'] = '/tmp/transcriptions'
+# Directories for temporary storage
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['TRANSCRIPTION_FOLDER'] = 'transcriptions'
 
 # Ensure the upload and transcription folders exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -21,27 +21,22 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        return "No file part", 400
+        return jsonify({"error": "No file part"}), 400
 
     file = request.files['file']
     if file.filename == '':
-        return "No selected file", 400
+        return jsonify({"error": "No selected file"}), 400
 
     filename = secure_filename(file.filename)
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(file_path)
 
     transcription = transcribe_audio(file_path)
-    transcription_filename = f"{os.path.splitext(filename)[0]}.txt"
-    transcription_path = os.path.join(app.config['TRANSCRIPTION_FOLDER'], transcription_filename)
-
-    with open(transcription_path, 'w') as f:
-        f.write(transcription)
 
     # Clean up the uploaded file
     os.remove(file_path)
 
-    return send_file(transcription_path, as_attachment=True, download_name=transcription_filename)
+    return jsonify({"transcription": transcription})
 
 def transcribe_audio(file_path):
     audio = AudioSegment.from_file(file_path)
