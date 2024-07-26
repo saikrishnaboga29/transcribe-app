@@ -1,11 +1,8 @@
-from flask import Flask, jsonify
-import os
+import json
+from flask_lambda import FlaskLambda
+from app import app
 
-app = Flask(__name__)
+lambda_app = FlaskLambda(app)
 
-@app.route('/')
-def index():
-    return jsonify(message="Hello from Flask on Netlify Functions!")
-
-if __name__ == "__main__":
-    app.run(debug=True)
+def handler(event, context):
+    return lambda_app(event, context)
