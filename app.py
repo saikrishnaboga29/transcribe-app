@@ -4,7 +4,7 @@ import os
 import speech_recognition as sr
 from pydub import AudioSegment
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
 # Directories for temporary storage
 app.config['UPLOAD_FOLDER'] = 'uploads'
