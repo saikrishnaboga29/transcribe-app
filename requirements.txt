@@ -1,0 +1,5 @@
+Flask
+wsgi_handler
+speechrecognition
+pydub
+werkzeug
