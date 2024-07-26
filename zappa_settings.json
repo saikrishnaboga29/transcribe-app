@@ -1,7 +1,0 @@
-{
-    "dev": {
-        "app_function": "app.app",
-        "aws_region": "us-east-1",
-        "s3_bucket": "zappaconfigbucket"
-    }
-}
