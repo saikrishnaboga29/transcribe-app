@@ -1,3 +1,26 @@
+document.getElementById('testButton').addEventListener('click', async function() {
+    console.log("Test button clicked.");
+
+    try {
+        const response = await fetch('/test', {
+            method: 'GET'
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log("Response from /test:", data);
+        document.getElementById('testResult').innerText = data.message;
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('testResult').innerText = 'An error occurred while fetching the test route.';
+    }
+});
+
+
+
 document.getElementById('uploadForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     console.log("Form submission started.");

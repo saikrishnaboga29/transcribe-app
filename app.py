@@ -1,13 +1,14 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, jsonify
 import speech_recognition as sr
 from pydub import AudioSegment
 import io
 
-app = Flask(__name__, template_folder='templates', static_folder='static')
+app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/test', methods=['GET'])
+def test_route():
+    print("Received test request.")
+    return jsonify({"message": "Test route is working!"})
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
